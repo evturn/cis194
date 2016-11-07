@@ -34,6 +34,9 @@ sumDigits = sum . map f where
 luhn :: Integer -> Bool
 luhn = (== 0) . (`mod` 10) . sumDigits . doubleEveryOther . toRevDigits
 
+-- move n − 1 from a to b using c as temporary storage
+-- move n - 1 from a to c
+-- move n − 1 from b to c using a as temporary storage
 type Peg = String
 type Move = (Peg, Peg)
 
