@@ -2,23 +2,16 @@
 
 module LogAnalysis where
 
--- import Log
+import Log
 
-splitToLines :: String -> [String]
-splitToLines x = lines x
+parseMessage :: String -> LogMessage
+parseMessage xs = let ys = words xs in
+  case ys of
+    ("I":x:rest)   -> LogMessage Info    (read x) (unwords rest)
+    ("W":x:rest)   -> LogMessage Warning (read x) (unwords rest)
+    ("E":y:x:rest) -> LogMessage (Error  (read y))
+                                         (read x) (unwords rest)
+    _              -> Unknown                     (unwords ys)
 
-splitFirst :: [String] -> [String]
-splitFirst xs = [take 1 x | x <- xs]
-
-splitHead :: String -> [String]
-splitHead xs = splitFirst . splitToLines $ xs
-
-parseType :: String -> String
-parseType []  = "Nothing br0"
-parseType "E" = "Error"
-parseType "W" = "Warning"
-parseType "I" = "Info"
-parseType _   = "Nothing Againz"
-
-parse :: String -> [String]
-parse = map parseType . splitHead
+parse :: String -> [LogMessage]
+parse = map parseMessage . lines
