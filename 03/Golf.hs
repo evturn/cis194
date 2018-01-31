@@ -23,3 +23,8 @@ localMaxima xs = sort $ go xs []
     go (x:[]) ys     = ys
     go (x:y:[]) ys   = ys
     go (x:y:z:xs) ys = go (y:z:xs) (bool ys (y:ys) (y > x && y > z))
+
+-----------------------------------------------------------------------------
+-- 3.
+-- histogram :: [Int] -> String
+histogram xs = fmap (\n -> (n, length $ filter (\x -> n == x) xs)) [1..9]
